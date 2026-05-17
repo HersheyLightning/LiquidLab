@@ -1,0 +1,13 @@
+classTweaker v1 named
+accessible field net/minecraft/client/particle/Particle stopped Z
+accessible field net/minecraft/client/render/Camera area Lnet/minecraft/world/BlockView;
+accessible field net/minecraft/client/render/Camera$Projection center Lnet/minecraft/util/math/Vec3d;
+accessible class net/minecraft/client/render/BackgroundRenderer$FogData
+
+transitive-extendable class net/minecraft/client/particle/BlockLeakParticle$Dripping
+transitive-extendable class net/minecraft/client/particle/BlockLeakParticle$ContinuousFalling
+transitive-extendable class net/minecraft/client/particle/BlockLeakParticle$Landing
+transitive-accessible method net/minecraft/client/particle/BlockLeakParticle$Dripping <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;Lnet/minecraft/particle/ParticleEffect;)V
+transitive-accessible method net/minecraft/client/particle/BlockLeakParticle$ContinuousFalling <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;Lnet/minecraft/particle/ParticleEffect;)V
+transitive-accessible method net/minecraft/client/particle/BlockLeakParticle$Landing <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;)V
+transitive-inject-interface net/minecraft/fluid/Fluid com/hersh/liquid_lab/util/FluidExtensions

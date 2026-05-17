@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "package": "com.hersh.liquid_lab.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BucketItemMixin",
+    "EntityMixin",
+    "FlowableFluidAccessor",
+    "FluidBlockMixin",
+    "ItemEntityMixin",
+    "LivingEntityMixin",
+    "StayAboveWaterTaskMixin",
+    "SwimGoalMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "BackgroundRendererMixin",
+    "ClientPlayerEntityMixin",
+    "ClientWorldMixin",
+    "GameRendererMixin",
+    "PlayerEntityRendererMixin",
+    "WorldRendererMixin"
+  ]
+}

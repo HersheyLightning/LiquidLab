@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "liquid_lab",
+	"version": "${version}",
+	"name": "Liquid Lab",
+	"description": "An API that streamlines the creation of custom fluids.",
+	"authors": [
+		"HersheyLightning"
+	],
+	"contact": {
+		"homepage": "https://hersheylightning.com",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/liquid_lab/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.hersh.liquid_lab.LiquidLab"
+		],
+		"client": [
+			"com.hersh.liquid_lab.LiquidLabClient"
+		]
+	},
+	"mixins": [
+		"liquid_lab.mixins.json"
+	],
+	"accessWidener": "liquid_lab.classtweaker",
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
