@@ -1,15 +1,15 @@
 # Description
-Liquid Lab is a fluid API to streamline the creation of custom fluids. You can set fog attributes, what happens when your fluids mix with other fluids, and create gaseous fluids that flow upwards. This mod exists to have an easy way to create a high quality custom fluid, that is easily customizable.
+Liquid Lab is a fluid API to streamline the creation of custom fluids, as most fluid attributes are hardcoded. Some features include setting fog color, custom mixing behavior, and the creation of gaseous fluids that flow upwards. This mod exists because fluids on fabric have limited functionality and it would be useful to have a way to create a high quality custom fluid.
 
 # Features
 
 ## Base Fluid Changes
-Lots of utility methods added to the `Fluid` / `FlowableFluid` class
+Lots of utility methods added to the base `Fluid` class
 
 **Fluid Mixing**
 
 - Done through `onFluidMix`
-- Called when your fluid immediately touches another fluid
+- Immediately called when your fluid touches another fluid
 - Params:
   - World the fluid is in
   - Block Positon of the calling fluid
@@ -50,11 +50,11 @@ Lots of utility methods added to the `Fluid` / `FlowableFluid` class
 **Fog**
 
 - Done through `getFogProperties`
-- Enables the fluid to have fogginess
+- Enables the fluid to have special fog
 - Params:
-  - World the viewing entity is in
+  - World the entity is in
   - Position of the cameara
-  - Entity that would view the fog
+  - Entity that is viewing the fog
 - Returns:
   - Fog start in blocks
   - Fog End in Blocks
@@ -65,7 +65,7 @@ Lots of utility methods added to the `Fluid` / `FlowableFluid` class
 - Done through `getBucketEmptySound`
 - Enables the fluid to not only have a custom filling sound, but also a custom emptying sound
 - Returns:
-  - The sound to make when a bucket is filled or emptied
+  - The sound to make when a bucket is emptied
 
 **Pathfinding**
 
@@ -74,7 +74,7 @@ Lots of utility methods added to the `Fluid` / `FlowableFluid` class
 - Params:
   - The type of navigation an entity has
 - Returns:
-  - Weather or not pathfinding is valid through this fluid
+  - If it is valid to pathfind through this fluid
 
 ## Fluid Tags
 3 fluid tags are added by the API:
@@ -83,7 +83,7 @@ Lots of utility methods added to the `Fluid` / `FlowableFluid` class
 - `liquid_lab:drowns`
   - Defines if this fluid will drown entities submerged within it
 - `liquid_lab:gaseous`
-  - Marks the fluid as a gas, does not have any functionality
+  - Simply marks the fluid as a gas, does not have any other functionality
 
-## Gas Fluids
-In addition to adding ways to create custom fluids easier, this API also adds reversed fluids. Gas fluids are created the same way as regular fluids, except the block is registered by using `GasFluidBlock` and the fluid is created by extending `FlowableGasFluid`. Rendering a gas fluid is done through an instance of `SimpleGasFluidRenderHandler`, rather than `SimpleFluidRenderHandler`.
+## Gaseous Fluids
+Additionally, the API also adds reversed fluids that flow upwards. Gas fluids are registered in the same way as regular fluids, except the block form is created with `GasFluidBlock` and the fluid form is created by extending `FlowableGasFluid`. To have the proper rendering for a gas, use `SimpleGasFluidRenderHandler`, rather than `SimpleFluidRenderHandler` in your client initializer.
