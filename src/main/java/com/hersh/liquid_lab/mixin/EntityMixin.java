@@ -52,9 +52,14 @@ public abstract class EntityMixin {
 
     @Unique private Set<Fluid> touchingFluids = new HashSet<>();
 
-    @ModifyReturnValue(method = "isInFluid", at = @At("TAIL"))
+    @ModifyReturnValue(method = "isInFluid", at = @At("RETURN"))
     private boolean isInFluid(boolean original) {
         return original || !firstUpdate && fluidHeight.values().doubleStream().anyMatch(height -> height > 0.0);
+    }
+
+    @ModifyReturnValue(method = "shouldSpawnSprintingParticles", at = @At("RETURN"))
+    private boolean shouldSpawnSprintingParticles(boolean original) {
+        return original && this.getFluidHeight(ModFluidTags.SWIMMABLE) <= 0.0;
     }
 
     @Inject(method = "updateWaterState", at = @At("TAIL"))
