@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://hersheylightning.com",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/HersheyLightning/LiquidLab"
 	},
 	"license": "MIT",
 	"icon": "assets/liquid_lab/icon.png",
