@@ -49,6 +49,7 @@ public abstract class EntityMixin {
     @Shadow public abstract boolean hasVehicle();
     @Shadow private BlockPos blockPos;
     @Shadow public abstract void onLanding();
+    @Shadow public boolean noClip;
 
     @Unique private Set<Fluid> touchingFluids = new HashSet<>();
 
@@ -95,7 +96,7 @@ public abstract class EntityMixin {
         });
 
         for (FluidPush pushState : pushStates) {
-            if (this.touchingFluids.stream().noneMatch(fluid -> pushState.fluid.getFluid().matchesType(fluid))) {
+            if (!this.noClip && this.touchingFluids.stream().noneMatch(fluid -> pushState.fluid.getFluid().matchesType(fluid))) {
                 pushState.fluid.getFluid().onEntityEntry(this.getWorld(), (Entity)(Object) this);
             }
 
