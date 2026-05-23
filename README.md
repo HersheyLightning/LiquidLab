@@ -68,6 +68,13 @@ Lots of utility methods added to the base `Fluid` class
   - Fog End in Blocks
   - RGB color of the fog
 
+**Rain Particles**
+
+- Done through `getRainParticle`
+- Gives the fluid unique splash particles when rain falls onto it
+- Returns:
+  - The particle to use when the fluid is rained on
+
 **Bucket Sounds**
 
 - Done through `getBucketEmptySound`
