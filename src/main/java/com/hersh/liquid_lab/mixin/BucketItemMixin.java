@@ -2,10 +2,8 @@ package com.hersh.liquid_lab.mixin;
 
 import com.hersh.liquid_lab.fluid.ModFluidTags;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.sound.SoundEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
