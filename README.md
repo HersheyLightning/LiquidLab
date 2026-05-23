@@ -16,6 +16,14 @@ Lots of utility methods added to the base `Fluid` class
   - Side the fluid was touched from
   - Fluid state that was interacted with 
 
+**Entity Splashing**
+
+- Done through `onEntityEntry`
+- Called when an entity first touches the fluid
+- Params:
+  - World the entity is in
+  - Entity that touched the fluid
+
 **Entity Interactions**
 
 - Done through `onEntityCollision`
@@ -77,13 +85,28 @@ Lots of utility methods added to the base `Fluid` class
   - If it is valid to pathfind through this fluid
 
 ## Fluid Tags
-3 fluid tags are added by the API:
+7 fluid tags are added by the API:
+- `liquid_lab:diveable`
+  - Defines that this fluid is swimmable and has sprint swimming
 - `liquid_lab:swimmable`
   - Defines if this fluid can be swum in
 - `liquid_lab:drowns`
   - Defines if this fluid will drown entities submerged within it
+- `liquid_lab:evaporates`
+  - Defines if the fluid cannot be placed in the nether
+- `liquid_lab:fall_damage_reducing`
+  - Makes the fluid affect fall damage the same way lava does
+- `liquid_lab:fall_damage_resetting`
+  - Makes the fluid affect fall damage in the same way as water
 - `liquid_lab:gaseous`
   - Simply marks the fluid as a gas, does not have any other functionality
 
 ## Gaseous Fluids
-Additionally, the API also adds reversed fluids that flow upwards. Gas fluids are registered in the same way as regular fluids, except the block form is created with `GasFluidBlock` and the fluid form is created by extending `FlowableGasFluid`. To have the proper rendering for a gas, use `SimpleGasFluidRenderHandler`, rather than `SimpleFluidRenderHandler` in your client initializer.
+Additionally, the API also adds reversed fluids that flow upwards. Gas fluids are registered in the same way as regular fluids, except the block form is created with `GasFluidBlock` and the fluid form is created by extending `FlowableGasFluid`. To correctly render a gas fluid, use `SimpleGasFluidRenderHandler`, rather than `SimpleFluidRenderHandler` in your client initializer.
+
+## Utility
+Some simple utility methods are added by the API to make registering certain aspects of fluids simpler.
+
+**Particle Utils**
+
+Contains methods related to registering block leak particles. The class allows for registering dripping, falling, and landing particles independently or all at once for fluids and gasses.
