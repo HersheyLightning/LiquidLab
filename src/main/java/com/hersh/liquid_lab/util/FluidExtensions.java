@@ -36,12 +36,12 @@ public interface FluidExtensions {
     }
 
     default void onEntityEntry(World world, Entity entity) {
-
     }
     
     default void onEntityCollision(World world, BlockPos pos, Entity entity) {
     }
 
+    @Deprecated
     default boolean onFluidMix(World world, BlockPos pos, Direction dir, FluidState fluidState) {
         return false;
     }

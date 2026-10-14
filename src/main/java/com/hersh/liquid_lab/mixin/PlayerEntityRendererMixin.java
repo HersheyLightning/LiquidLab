@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class PlayerEntityRendererMixin {
     @ModifyExpressionValue(method = "setupTransforms(Lnet/minecraft/client/network/AbstractClientPlayerEntity;Lnet/minecraft/client/util/math/MatrixStack;FFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isTouchingWater()Z"))
     private boolean touchingDiveableFluid(boolean original, AbstractClientPlayerEntity entity) {
-        return original || entity.getFluidHeight(ModFluidTags.DIVEABLE) > 0.0;
+        return original || entity.getFluidHeight(ModFluidTags.ENHANCED_MOBILITY) > 0.0;
     }
 }

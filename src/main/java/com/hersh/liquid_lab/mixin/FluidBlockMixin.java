@@ -1,12 +1,16 @@
 package com.hersh.liquid_lab.mixin;
 
 import com.hersh.liquid_lab.fluid.FlowableGasFluid;
+import com.hersh.liquid_lab.util.FluidUtils;
+import com.hersh.liquid_lab.util.mixing.FluidRule;
+import com.hersh.liquid_lab.util.mixing.MixType;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -30,15 +34,24 @@ public abstract class FluidBlockMixin {
             if (fluidState.getFluid() instanceof FlowableGasFluid) {
                 if (dir == Direction.UP) continue;
             } else if (dir == Direction.DOWN) continue;
-            if (fluid.onFluidMix(world, pos, dir, fluidState)) {
-                playExtinguishSound(world, pos);
+            if (this.fluid.onFluidMix(world, pos, dir, fluidState)) {
+                this.playExtinguishSound(world, pos);
                 cir.setReturnValue(false);
+            }
+        }
+        if (cir.isCancelled() || world.isClient) return;
+
+        for (FluidRule rule : FluidUtils.getFluidRules(world.getFluidState(pos), MixType.ON_UPDATE)) {
+            if (rule.predicate().test((ServerWorld) world, pos)) {
+                world.setBlockState(pos, rule.transform().get(world.getRandom(), pos));
+                if (rule.smoke()) this.playExtinguishSound(world, pos);
+                cir.setReturnValue(false); return;
             }
         }
     }
 
     @ModifyReturnValue(method = "canPathfindThrough", at = @At("RETURN"))
     private boolean canPathfindThrough(boolean original, BlockState state, NavigationType type) {
-        return original && fluid.canPathfindThrough(type);
+        return original && this.fluid.canPathfindThrough(type);
     }
 }

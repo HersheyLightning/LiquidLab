@@ -6,18 +6,13 @@
     "BucketItemMixin",
     "EntityMixin",
     "FlowableFluidAccessor",
+    "FlowableFluidMixin",
     "FluidBlockMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
     "StayAboveWaterTaskMixin",
     "SwimGoalMixin"
   ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
-  },
   "client": [
     "BackgroundRendererMixin",
     "ClientPlayerEntityMixin",
@@ -25,5 +20,11 @@
     "GameRendererMixin",
     "PlayerEntityRendererMixin",
     "WorldRendererMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
 }

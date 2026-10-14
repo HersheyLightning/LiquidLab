@@ -1,0 +1,58 @@
+{
+  "rules": [
+    {
+      "type": "on_update",
+      "is_still": true,
+      "predicate": {
+        "type": "liquid_lab:touching_fluids",
+        "fluids": "#minecraft:water"
+      },
+      "transform": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:obsidian"
+        }
+      }
+    },
+    {
+      "type": "on_update",
+      "is_still": false,
+      "predicate": {
+        "type": "liquid_lab:touching_fluids",
+        "fluids": "#minecraft:water"
+      },
+      "transform": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:cobblestone"
+        }
+      }
+    },
+    {
+      "type": "on_update",
+      "predicate": {
+        "type": "minecraft:all_of",
+        "predicates": [
+          {
+            "type": "minecraft:matching_blocks",
+            "offset": [0, -1, 0],
+            "blocks": "minecraft:soul_soil"
+          },
+          {
+            "type": "liquid_lab:adjacent_blocks",
+            "blocks": "minecraft:blue_ice"
+          }
+        ]
+      },
+      "transform": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:basalt",
+          "Properties": {
+            "axis": "y"
+          }
+        }
+      }
+    }
+  ]
+}

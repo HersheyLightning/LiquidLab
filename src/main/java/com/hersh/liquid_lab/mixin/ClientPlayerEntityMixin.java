@@ -15,12 +15,12 @@ public abstract class ClientPlayerEntityMixin {
     @ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
     private boolean touchingDiveableFluid(boolean original) {
         ClientPlayerEntity entity = (ClientPlayerEntity)(Object) this;
-        return original || entity.getFluidHeight(ModFluidTags.DIVEABLE) > 0.0;
+        return original || entity.getFluidHeight(ModFluidTags.ENHANCED_MOBILITY) > 0.0;
     }
 
     @ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedInWater()Z"))
     private boolean submergedDiveableFluid(boolean original) {
         ClientPlayerEntity entity = (ClientPlayerEntity)(Object) this;
-        return original || entity.isSubmergedIn(ModFluidTags.DIVEABLE);
+        return original || entity.isSubmergedIn(ModFluidTags.ENHANCED_MOBILITY);
     }
 }

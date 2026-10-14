@@ -12,6 +12,7 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
@@ -20,10 +21,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -44,12 +47,12 @@ public abstract class EntityMixin {
     @Shadow public abstract double getFluidHeight(TagKey<Fluid> fluid);
     @Shadow public float fallDistance;
     @Shadow public abstract boolean isInLava();
-    @Shadow public abstract boolean isSubmergedIn(TagKey<Fluid> fluidTag);
-    @Shadow public abstract boolean isSprinting();
-    @Shadow public abstract boolean hasVehicle();
-    @Shadow private BlockPos blockPos;
     @Shadow public abstract void onLanding();
     @Shadow public boolean noClip;
+    @Shadow public abstract double getEyeY();
+    @Shadow @Final private Set<TagKey<Fluid>> submergedFluidTag;
+    @Shadow public abstract boolean isSubmergedIn(TagKey<Fluid> fluidTag);
+    @Shadow private BlockPos blockPos;
 
     @Unique private Set<Fluid> touchingFluids = new HashSet<>();
 
@@ -61,6 +64,16 @@ public abstract class EntityMixin {
     @ModifyReturnValue(method = "shouldSpawnSprintingParticles", at = @At("RETURN"))
     private boolean shouldSpawnSprintingParticles(boolean original) {
         return original && this.getFluidHeight(ModFluidTags.SWIMMABLE) <= 0.0;
+    }
+
+    @Inject(method = "updateSubmergedInWaterState", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;getFluidState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/fluid/FluidState;"), cancellable = true)
+    private void isGasSubmerged(CallbackInfo ci, @Local BlockPos blockPos, @Local FluidState fluidState) {
+        if (fluidState.getFluid() instanceof FlowableGasFluid) {
+            if (blockPos.getY() + 1 - fluidState.getHeight(this.getWorld(), blockPos) < this.getEyeY()) {
+                fluidState.streamTags().forEach(this.submergedFluidTag::add);
+            }
+            ci.cancel();
+        }
     }
 
     @Inject(method = "updateWaterState", at = @At("TAIL"))
@@ -138,17 +151,18 @@ public abstract class EntityMixin {
         }
     }
 
-    @ModifyExpressionValue(method = "isCrawling", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isTouchingWater()Z"))
+    @ModifyExpressionValue(method = {"isCrawling", "updateSwimming"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isTouchingWater()Z"))
     private boolean touchingDiveableFluid(boolean original) {
-        return original || this.getFluidHeight(ModFluidTags.DIVEABLE) > 0.0;
+        return original || this.getFluidHeight(ModFluidTags.ENHANCED_MOBILITY) > 0.0;
     }
 
-    @ModifyArg(method = "updateSwimming", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setSwimming(Z)V", ordinal = 0))
-    private boolean swimmingSwimCondition(boolean original) {
-        return original || this.isSprinting() && this.getFluidHeight(ModFluidTags.DIVEABLE) > 0.0 && !this.hasVehicle();
+    @ModifyExpressionValue(method = "updateSwimming", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isSubmergedInWater()Z"))
+    private boolean submergedDiveableFluid(boolean original) {
+        return original || this.isSubmergedIn(ModFluidTags.ENHANCED_MOBILITY);
     }
-    @ModifyArg(method = "updateSwimming", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setSwimming(Z)V", ordinal = 1))
-    private boolean notSwimmingSwimCondition(boolean original) {
-        return original || this.isSprinting() && this.isSubmergedIn(ModFluidTags.DIVEABLE) && !this.hasVehicle() && this.getWorld().getFluidState(this.blockPos).isIn(ModFluidTags.DIVEABLE);
+
+    @ModifyExpressionValue(method = "updateSwimming", at = @At(value = "INVOKE", target = "Lnet/minecraft/fluid/FluidState;isIn(Lnet/minecraft/registry/tag/TagKey;)Z"))
+    private boolean feetTouchingDiveableFluid(boolean original) {
+        return original || this.getWorld().getFluidState(this.blockPos).isIn(ModFluidTags.ENHANCED_MOBILITY);
     }
 }

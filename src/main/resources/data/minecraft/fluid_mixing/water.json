@@ -1,0 +1,18 @@
+{
+  "rules": [
+    {
+      "type": "on_flow",
+      "predicate": {
+        "type": "minecraft:matching_fluids",
+        "offset": [0, 1, 0],
+        "fluids": "#minecraft:lava"
+      },
+      "transform": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:stone"
+        }
+      }
+    }
+  ]
+}

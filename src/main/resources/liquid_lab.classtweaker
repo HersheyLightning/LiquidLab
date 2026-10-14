@@ -3,6 +3,8 @@ accessible field net/minecraft/client/particle/Particle stopped Z
 accessible field net/minecraft/client/render/Camera area Lnet/minecraft/world/BlockView;
 accessible field net/minecraft/client/render/Camera$Projection center Lnet/minecraft/util/math/Vec3d;
 accessible class net/minecraft/client/render/BackgroundRenderer$FogData
+accessible method net/minecraft/entity/Entity getSplashSound ()Lnet/minecraft/sound/SoundEvent;
+accessible method net/minecraft/entity/Entity getHighSpeedSplashSound ()Lnet/minecraft/sound/SoundEvent;
 
 transitive-extendable class net/minecraft/client/particle/BlockLeakParticle$Dripping
 transitive-extendable class net/minecraft/client/particle/BlockLeakParticle$ContinuousFalling
